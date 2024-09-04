@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIGRATION</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/3c14993d65.js" crossorigin="anonymous"></script>
+</head>
+<body> 
+
+   
+      
+    
+
+  <div  id="cbwrap">
+    <form class="my-4">
+        <div class="form-row align-items-center">
+          <div class="col-sm-12">
+            <label class="sr-only" for="api-endpoint">API</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text text-primary">POST</div>
+              </div>
+              <input type="text" class="form-control" id="api-endpoint" placeholder="API">
+            </div>
+          </div>
+        </div>
+      </form>
+      
+    
+    <form id="file-upload-form" class="uploader">
+        <input id="file-upload" type="file" name="fileUpload" accept=".xls,.xlsx" />
+      
+        <label for="file-upload" id="file-drag">
+          <img id="file-image" src="./pngwing.com.png" alt="Preview" class="hidden">
+          <div id="start">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            <div>Select a file or drag here</div>
+            <div id="notimage" class="hidden">Please select an Excel File</div>
+            <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+          </div>
+          <div id="response" class="hidden">
+            <div id="messages"></div>
+          </div>
+        </label>
+      </form>
+    <table class="my-5" id="demoB"></table>
+    <div class="col-md-12 m-auto text-right" id="suivbtn">
+        <button class="text-center m-auto btn btn-primary" id="sendDataBtn">
+          Suivant <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+      
+   
+  </div>
+
+
+  
+
+
+  <script src="renderer.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
