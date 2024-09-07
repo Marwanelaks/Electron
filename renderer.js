@@ -5,16 +5,19 @@ let jsonData = [];
 window.onload = () => {
     document.getElementById("sendDataBtn").addEventListener("click", function() {
         const apiEndpoint = document.getElementById("api-endpoint").value;
+        const apiToken = document.getElementById('apiToken').value; 
 
         if (!apiEndpoint) {
             alert("Please enter a valid API endpoint.");
             return;
         }
+        
         jsonData.forEach((rowData, index) => {
             fetch(apiEndpoint, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${apiToken}`
                 },
                 body: JSON.stringify(rowData)
             })
