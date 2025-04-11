@@ -1,6 +1,7 @@
 {
   "name": "migration",
   "version": "1.0.0",
+  "description": "Application for data migration",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -10,7 +11,6 @@
   "keywords": [],
   "author": "Marwane Laksiouer",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "electron": "^32.0.1",
     "electron-builder": "^25.0.5"
@@ -19,29 +19,22 @@
     "bs-stepper": "^1.7.0",
     "xlsx": "^0.18.5"
   },
-  
-    "build": {
-      "appId": "com.optimgov.id",
-      "productName": "Migration",
-      "files": [
-        "main.js",
-        "preload.js",
-        "dist/**/*",
-        "node_modules/**/*",
-        "package.json"
-      ],
-      "win": {
-        "icon": "assets/logo.ico",
-        "target": "nsis"
-      },
-      "mac": {
-        "icon": "assets/logo.icns",
-        "target": "dmg"
-      },
-      "linux": {
-        "icon": "assets/logo.png",
-        "target": ["AppImage", "deb"]
-      }
-    }
-  
+  "build": {
+    "appId": "com.optimgov.id",
+    "productName": "Migration",
+    "files": [
+      "main.js",
+      "preload.js",
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/logo.ico",
+      "target": "nsis",
+      "sign": false
+    },
+    "asar": true,
+    "npmArgs": ["--no-optional"]
+  }
 }
