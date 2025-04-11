@@ -3,79 +3,554 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIGRATION</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://kit.fontawesome.com/3c14993d65.js" crossorigin="anonymous"></script>
+  <title>Excel Migration Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-bg: #0f0f13;
+      --darker-bg: #08080b;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --text: #f5f6fa;
+      --text-muted: #b2bec3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      background-color: var(--dark-bg);
+      position: relative;
+    }
+
+    /* Animated Blob Background */
+    .bg-blobs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      opacity: 0.8;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.2;
+      mix-blend-mode: screen;
+      transition: all 15s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+      will-change: transform;
+    }
+
+    .blob-1 {
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      width: 500px;
+      height: 500px;
+      left: -100px;
+      top: -100px;
+      animation: float-1 25s infinite alternate;
+    }
+
+    .blob-2 {
+      background: linear-gradient(135deg, #00b894 0%, #55efc4 100%);
+      width: 700px;
+      height: 700px;
+      right: -150px;
+      bottom: -150px;
+      animation: float-2 30s infinite alternate;
+    }
+
+    .blob-3 {
+      background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+      width: 400px;
+      height: 400px;
+      right: 30%;
+      top: 40%;
+      animation: float-3 20s infinite alternate;
+    }
+
+    @keyframes float-1 {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(50px, 80px) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    @keyframes float-2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-80px, -50px) scale(1.1); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    @keyframes float-3 {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(60px, -40px) rotate(120deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    .container {
+      width: 100%;
+      height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      height: 70px;
+      /* background: rgba(15, 15, 19, 0.7); */
+      backdrop-filter: blur(5px);
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+    }
+
+    .logo i {
+      margin-right: 0.8rem;
+      font-size: 1.5rem;
+    }
+
+    .progress {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: calc(100% - 130px); /* 70px header + 60px buttons */
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slider-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease;
+      height: 100%;
+      width: 100%;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .slide-content {
+      width: 100%;
+      max-width: 800px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      /* background: rgba(15, 15, 19, 0.5); */
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); */
+    }
+
+    .slide-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .slide h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .slide p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    .slide-img {
+  width: 100%;
+  max-width: 240px;
+  min-width: 120px; /* Prevents image from becoming too small */
+  height: auto;
+  margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Responsive margin */
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+  
+  /* Responsive sizing based on viewport */
+  width: clamp(120px, 50vw, 240px); /* Scales between 120px and 240px */
+  
+  /* For very small screens */
+  @media (max-width: 480px) {
+    max-width: 180px;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* For medium screens */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    max-width: 200px;
+  }
+}
+
+    .controls {
+      margin-bottom: 25px;
+      flex: 0 0 auto;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 1rem;
+      /* background: rgba(15, 15, 19, 0.7); */
+      backdrop-filter: blur(5px);
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      margin: 0 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: var(--accent);
+      transform: scale(1.2);
+      box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--text-muted);
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-access {
+      margin-top: 0.8rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease 0.3s;
+    }
+
+    .btn-access.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header {
+        height: 60px;
+        padding: 0.8rem;
+      }
+      
+      .logo {
+        font-size: 1.1rem;
+      }
+      
+      .logo i {
+        font-size: 1.3rem;
+      }
+      
+      .progress {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+      
+      .main-content {
+        height: calc(100% - 120px);
+      }
+      
+      .slide {
+        padding: 0.5rem;
+      }
+      
+      .slide-content {
+        padding: 0.8rem;
+        backdrop-filter: blur(5px);
+      }
+      
+      .slide-icon {
+        font-size: 2.5rem;
+      }
+      
+      .slide h2 {
+        font-size: 1.5rem;
+      }
+      
+      .slide p {
+        font-size: 1rem;
+      }
+      
+      .controls {
+        height: 60px;
+      }
+    }
+  </style>
 </head>
-<body> 
-
-   
-      
-    
-
-  <div  id="cbwrap">
-    <form class="my-4">
-        <div class="form-row align-items-center">
-          <div class="col-sm-12">
-            <label class="sr-only" for="api-endpoint">API</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text text-primary">POST</div>
-              </div>
-              <input type="text" class="form-control" id="api-endpoint" placeholder="API">
-            </div>
-          </div>
-        </div>
-      
-        <div class="form-row align-items-center my-2">
-          <div class="col-sm-12">
-            <label class="sr-only" for="apiToken">API Token</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text text-primary">Bearer</div>
-              </div>
-              <input type="text" class="form-control" id="apiToken" placeholder="API Token">
-            </div>
-          </div>
-        </div>
-      </form>
-      
-    
-    <form id="file-upload-form" class="uploader">
-        <input id="file-upload" type="file" name="fileUpload" accept=".xls,.xlsx" />
-      
-        <label for="file-upload" id="file-drag">
-          <img id="file-image" src="./pngwing.com.png" alt="Preview" class="hidden">
-          <div id="start">
-            <i class="fa fa-download" aria-hidden="true"></i>
-            <div>Select a file or drag here</div>
-            <div id="notimage" class="hidden">Please select an Excel File</div>
-            <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-          </div>
-          <div id="response" class="hidden">
-            <div id="messages"></div>
-          </div>
-        </label>
-      </form>
-    <table class="my-5" id="demoB"></table>
-    <div class="col-md-12 m-auto text-right" id="suivbtn">
-        <!-- <button class="text-center m-auto btn btn-primary" id="sendDataBtn">
-          Suivant <i class="fa-solid fa-paper-plane"></i>
-        </button> -->
-        <button class="text-center m-auto btn btn-primary" id="sendDataBtn">Start Migration <i class="fa-solid fa-paper-plane"></i></button>
-      </div>
-      
-   
+<body>
+  <!-- Animated Blob Background -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
 
+  <div class="container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-file-export"></i>
+        <span>ExcelMigrator</span>
+      </div>
+      <div class="progress">Step <span id="current-slide">1</span>/4</div>
+    </header>
 
-  
+    <div class="main-content">
+      <div class="slider-container">
+        <div class="slider" id="slider">
+          <!-- Slide 1 -->
+          <div class="slide">
+            <div class="slide-content">
+              <div class="slide-icon">
+                <i class="fas fa-file-excel"></i>
+              </div>
+              <h2>Excel Data Migration</h2>
+              <p>Easily transfer data from Excel files to any API endpoint with our intuitive migration tool.</p>
+              <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel Migration" class="slide-img">
+            </div>
+          </div>
 
+          <!-- Slide 2 -->
+          <div class="slide">
+            <div class="slide-content">
+              <div class="slide-icon">
+                <i class="fas fa-tasks"></i>
+              </div>
+              <h2>Batch Processing</h2>
+              <p>Process large datasets efficiently with customizable batch sizes and request delays.</p>
+              <img src="https://cdn-icons-png.flaticon.com/512/2885/2885417.png" alt="Batch Processing" class="slide-img">
+            </div>
+          </div>
 
-  <script src="renderer.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+          <!-- Slide 3 -->
+          <div class="slide">
+            <div class="slide-content">
+              <div class="slide-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h2>Progress Tracking</h2>
+              <p>Monitor your migration with live progress tracking and detailed error reporting.</p>
+              <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png" alt="Progress Tracking" class="slide-img">
+            </div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="slide">
+            <div class="slide-content">
+              <div class="slide-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h2>Secure & Reliable</h2>
+              <p>Your data stays on your machine with direct API communication to your endpoint.</p>
+              <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" alt="Security" class="slide-img">
+              <a href="./loading.html"><button class="btn btn-primary btn-access" id="access-btn">Access Migration Tool</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="dots" id="dots">
+          <div class="dot active" data-slide="0"></div>
+          <div class="dot" data-slide="1"></div>
+          <div class="dot" data-slide="2"></div>
+          <div class="dot" data-slide="3"></div>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn btn-secondary" id="prev-btn">
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <button class="btn btn-primary" id="next-btn">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const slider = document.getElementById('slider');
+      const dots = document.querySelectorAll('.dot');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const currentSlideDisplay = document.getElementById('current-slide');
+      const accessBtn = document.getElementById('access-btn');
+      
+      let currentSlide = 0;
+      const totalSlides = document.querySelectorAll('.slide').length;
+
+      // Initialize slider
+      updateSlider();
+
+      // Next button click
+      nextBtn.addEventListener('click', function() {
+        if (currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateSlider();
+        }
+      });
+
+      // Previous button click
+      prevBtn.addEventListener('click', function() {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlider();
+        }
+      });
+
+      // Dot navigation
+      dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+          currentSlide = parseInt(this.getAttribute('data-slide'));
+          updateSlider();
+        });
+      });
+
+      // Access button click
+      accessBtn.addEventListener('click', function() {
+        window.location.href = 'index.html';
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateSlider();
+        } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+          currentSlide--;
+          updateSlider();
+        }
+      });
+
+      // Update slider position and UI
+      function updateSlider() {
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // Update dots
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentSlide);
+        });
+
+        // Update buttons
+        prevBtn.style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
+        
+        if (currentSlide === totalSlides - 1) {
+          nextBtn.style.display = 'none';
+          accessBtn.classList.add('show');
+        } else {
+          nextBtn.style.display = 'block';
+          accessBtn.classList.remove('show');
+        }
+
+        // Update current slide display
+        currentSlideDisplay.textContent = currentSlide + 1;
+      }
+    });
+  </script>
 </body>
 </html>
