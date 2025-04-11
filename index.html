@@ -223,15 +223,13 @@
     }
 
     .slide-img {
-  width: 100%;
-  max-width: 240px;
+  width: 90%;
+  max-width: 200px;
   min-width: 120px; /* Prevents image from becoming too small */
   height: auto;
   margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Responsive margin */
   filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
   
-  /* Responsive sizing based on viewport */
-  width: clamp(120px, 50vw, 240px); /* Scales between 120px and 240px */
   
   /* For very small screens */
   @media (max-width: 480px) {
@@ -241,7 +239,7 @@
   
   /* For medium screens */
   @media (min-width: 768px) and (max-width: 1024px) {
-    max-width: 200px;
+    max-width: 100px;
   }
 }
 
