@@ -7,23 +7,6 @@ body,
   font-size: 16px;
 }
 
-
-
-
-
-
-
-/* html,
-body {
-  height: 100%;
-  text-align: center;
-}
-
-body {
-  padding: 2rem;
-  background: #f8f8f8;
-} */
-
 h2 {
   font-family: "Roboto", sans-serif;
   font-size: 26px;
@@ -169,9 +152,6 @@ p {
   cursor: pointer;
 }
 
-/* (X) DOES NOT MATTER */
-/* (X1) LAYOUT COSMETICS */
-/* * { box-sizing: border-box; } */
 body {
   font-family: arial, sans-serif;
   padding: 0; margin: 0; border: 0;
@@ -203,7 +183,6 @@ body {
   color: #fff; background: #a91616;
 }
 
-/* (X2) DEMO COSMETICS */
 #demoA, #demoB { width: 100%; }
 #demoA { margin-bottom: 20px; }
 #demoB {
@@ -214,3 +193,48 @@ body {
  }
 #demoB tr:nth-child(odd) { background: #d3cbff; }
 #demoB td { padding: 10px; }
+
+/* New styles for added features */
+.status-message {
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.status-message.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+#migrationProgress {
+  height: 20px;
+  border-radius: 4px;
+}
+
+#migrationProgress::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+#migrationProgress::-webkit-progress-value {
+  background-color: #454cad;
+  border-radius: 4px;
+}
+
+#migrationReport {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#migrationReport ul {
+  margin-bottom: 0;
+}
